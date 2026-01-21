@@ -1,0 +1,19 @@
+{
+  "name": "foodies",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "react": "^18",
+    "react-dom": "^18"
+  },
+  "devDependencies": {
+    "eslint-config-next": "^16.1.4",
+    "next": "^16.1.4"
+  }
+}
