@@ -1,8 +1,46 @@
+import { getMealBySlug } from "@/lib/meals";
+import Image from "next/image";
+import { notFound } from "next/navigation";
+import classes from "./page.module.css";
+
+export async function generateMetadata({ params }) {
+  const { mealSlug } = await params;
+  const meal = getMealBySlug(mealSlug);
+  return {
+    title: meal ? meal.title : "Meal Not Found",
+    description: meal ? meal.summary : "No meal found for the provided slug.",
+  };
+}
+
 export default async function MealsDetailsPage({ params }) {
   const { mealSlug } = await params;
+  const meal = getMealBySlug(mealSlug);
+
+  if (!meal) {
+    notFound();
+  }
   return (
-    <main>
-      <h1>MealsDetailsPage with params : {mealSlug}</h1>
-    </main>
+    <>
+      <header className={classes.header}>
+        <div className={classes.image}>
+          <Image fill src={meal.image} alt={meal.title} />
+        </div>
+        <div className={classes.headerText}>
+          <h1>{meal.title}</h1>
+          <p className={classes.creator}>
+            by <a href={`mailto:${meal.creator_email}`}>{meal.creator}</a>
+          </p>
+          <p className={classes.summary}>{meal.summary}</p>
+        </div>
+      </header>
+      <main>
+        <p
+          className={classes.instructions}
+          dangerouslySetInnerHTML={{
+            __html: meal.instructions.replace(/\n/g, "<br/>"),
+          }}
+        ></p>
+      </main>
+    </>
   );
 }
